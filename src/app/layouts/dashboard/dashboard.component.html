@@ -1,0 +1,23 @@
+<div class="d-flex flex-column align-items-center h-100">
+    <mat-toolbar>
+        <span>Nombre de la aplicacion</span>
+    </mat-toolbar>
+
+    <mat-drawer-container class="flex-grow-1 w-100">
+        <mat-drawer opened="true" mode="side">
+            <mat-list sideContent>
+                <mat-list-item>
+                    <span class="fw-medium fs-5">Alumnos</span>
+                </mat-list-item>
+                <mat-list-item>
+                    <a>Listado</a>
+                </mat-list-item>
+                <mat-divider class="mx-2"></mat-divider>
+            </mat-list>
+        </mat-drawer>
+        
+        <mat-drawer-content>
+            <app-alumnos></app-alumnos>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

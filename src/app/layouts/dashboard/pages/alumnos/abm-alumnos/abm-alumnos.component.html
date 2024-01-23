@@ -1,0 +1,38 @@
+<div>
+    <h1 *ngIf="alumno" appTitulo>{{alumno | fullName}}</h1>
+
+    <form [formGroup]="form">
+        <div class="row g-2">
+            <mat-form-field class="col-6">
+                <mat-label>Nombre</mat-label>
+                <input matInput [readonly]="!isEditable" formControlName="nombre" type="text" placeholder="Nombre">
+            </mat-form-field>
+            <mat-form-field class="col-6">
+                <mat-label>Apellido</mat-label>
+                <input matInput [readonly]="!isEditable" formControlName="apellido" type="text" placeholder="Apellido">
+            </mat-form-field>
+
+            <mat-form-field class="col-12">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput [readonly]="!isEditable" [matDatepicker]="datePicker" formControlName="fechaNacimiento">
+                <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker [disabled]="!isEditable" #datePicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-6">
+                <mat-label>Teléfono</mat-label>
+                <input matInput [readonly]="!isEditable" formControlName="telefono" type="text" placeholder="Teléfono">
+            </mat-form-field>
+            <mat-form-field class="col-6">
+                <mat-label>Email</mat-label>
+                <input matInput [readonly]="!isEditable" formControlName="email" type="text" placeholder="Email">
+            </mat-form-field>
+        </div>
+    </form>
+    <div>
+        <button mat-stroked-button *ngIf="isEditable" [disabled]="form.invalid" (click)="handleSave()">Guardar</button>
+        <button mat-stroked-button *ngIf="!isEditable" (click)="handleEdit()">Editar</button>
+        <button mat-stroked-button *ngIf="isEditable" (click)="handleCancel()">Cancelar</button>
+        <button mat-stroked-button *ngIf="alumno" (click)="handleDelete()">Eliminar</button>
+    </div>
+</div>
+

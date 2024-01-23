@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-end p-5">
+    <div [ngStyle]="{'height': '50px'}">
+        <button mat-stroked-button *ngIf="alumno" (click)="handleCargarNuevo()">Cargar nuevo</button>
+    </div>
+</div>
+<div class="row g-4 mx-2">
+    <div class="col">
+        <app-list-alumnos [data]="alumnos" (onSelect)="handleOnSelect($event)"></app-list-alumnos>
+    </div>
+    <div class="col">
+        <app-abm-alumnos [alumno]="alumno" (onSave)="handleOnSave($event)" (onDelete)="handleOnDelete($event)"></app-abm-alumnos>
+    </div>
+</div>
