@@ -1,88 +1,85 @@
-import { Component } from '@angular/core';
-import { Alumno } from 'src/app/models/alumno.model';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Alumno } from 'src/app/core/models/alumno.model';
+import { AbmAlumnosComponent } from './abm-alumnos/abm-alumnos.component';
+import { AlumnosService } from 'src/app/core/services/alumnos.service';
+import { firstValueFrom, timeout } from 'rxjs';
 
-let alumnosData:Alumno[] = [
-  {
-    id: 1,
-    nombre: "Juan",
-    apellido: "Pérez",
-    email: "juanpe@gmail.com",
-    telefono: "4879-9856",
-    fechaNacimiento: new Date("1987, 02, 06")
-  },
-  {
-    id: 2,
-    nombre: "Juana",
-    apellido: "Belardez",
-    email: "juanabe@gmail.com",
-    telefono: "4456-4854",
-    fechaNacimiento: new Date("1952, 12, 26")
-  },
-  {
-    id: 3,
-    nombre: "Alberto",
-    apellido: "Brener",
-    email: "albertobre@gmail.com",
-    telefono: "4168-4876",
-    fechaNacimiento: new Date("1978, 04, 02")
-  },
-  {
-    id: 4,
-    nombre: "Cacho",
-    apellido: "Taberla",
-    email: "cachotal@gmail.com",
-    telefono: "4785-5846",
-    fechaNacimiento: new Date("1997, 08, 09")
-  },
-  {
-    id: 5,
-    nombre: "Maria",
-    apellido: "Pérez",
-    email: "mariape@gmail.com",
-    telefono: "4785-5486",
-    fechaNacimiento: new Date("1988, 07, 18")
-  }
-]
 
 @Component({
   selector: 'app-alumnos',
   templateUrl: './alumnos.component.html',
   styleUrls: ['./alumnos.component.scss']
 })
-export class AlumnosComponent {
-  public alumnos = alumnosData;
+export class AlumnosComponent implements OnInit {
+  public alumnosData:Alumno[] = [];
   public alumno?:Alumno;
 
-  constructor() { }
+  constructor(
+    private dialogService:MatDialog,
+    private alumnosService:AlumnosService
+  ) { }
 
-  handleOnSave(alumno:Alumno):void {
-    console.log("onSaveAlumno - alumno: ", alumno);
-    if(alumno?.id) {
-      let ix = this.alumnos.findIndex((elem:Alumno) => elem.id === alumno.id);
-      this.alumnos.splice(ix, 1, alumno);
-      this.alumnos = [...this.alumnos];
-      this.alumno = alumno;      
+  ngOnInit(): void {
+    this.getData();
+  }
+
+  async getData():Promise<void> {
+    const data = await firstValueFrom(this.alumnosService.getAll());
+    this.alumnosData = [...data]
+    console.log("Alumnos data: ", this.alumnosData);
+  }
+
+  async handleOnDelete(alumno:Alumno):Promise<void> {
+    try {
+      const deleted = await firstValueFrom(this.alumnosService.deleteById(alumno.id!));
+      this.getData()
     }
-    else {
-      let newId = [...this.alumnos].sort((a:Alumno, b:Alumno) => a.id!-b.id!)[this.alumnos.length-1].id!+1;
-      let newAlumno = {...alumno, id: newId}
-      this.alumnos = [...this.alumnos, newAlumno]
-      this.alumno = newAlumno;
+    catch(err:any) {
+      console.log("Error eliminando alumno: ", err.message);
+      
     }
   }
 
-  handleOnDelete(alumno:Alumno):void {
-    this.alumnos = this.alumnos.filter((elem:Alumno) => elem.id !== alumno.id);
-    this.alumno = undefined;
-  }
-
-  handleOnSelect(alumno:Alumno):void {
+  async handleOnSelect(alumno:Alumno):Promise<void> {
     console.log("handleOnSelect - alumno: ", alumno);
-    this.alumno = alumno;
+    let dialogRef = this.dialogService.open(AbmAlumnosComponent, {
+      data:{
+        alumno: alumno
+      },
+      disableClose: true
+    })
+
+    try {
+      const persistio:boolean = await firstValueFrom(dialogRef.afterClosed());
+      if(persistio) {
+        this.getData();
+      }
+    }
+    catch(err:any) {
+      console.log("Error al hacer update: ", err.message);
+    }
   }
 
-  handleCargarNuevo() {
-    this.alumno = undefined;
+  async handleCargarNuevo():Promise<void> {
+    let dialogRef = this.dialogService.open(AbmAlumnosComponent, {
+      data:{
+        alumno: null
+      },
+      disableClose: true
+    });
+
+    try {
+      const persistio:boolean = await firstValueFrom(dialogRef.afterClosed());
+      if(persistio) {
+        this.getData();
+        console.log("Alumnos data: ", this.alumnosData);
+        
+      }
+    }
+    catch(err:any) {
+      console.log("Error al cargar nuevo: ", err.message);
+    }
   }
 
 }

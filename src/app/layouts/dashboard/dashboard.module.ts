@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AlumnosModule } from './pages/alumnos/alumnos.module';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { CursosModule } from './pages/cursos/cursos.module';
+import { NotFoundModule } from './pages/not-found/not-found.module';
+import { HomeModule } from './pages/home/home.module';
+import { DashboardRoutingModule } from './dashboard-routing.module';
 
 
 
@@ -12,14 +15,17 @@ import { AlumnosModule } from './pages/alumnos/alumnos.module';
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    NotFoundComponent
   ],
   imports: [
     CommonModule,
+    DashboardRoutingModule,
+    SharedModule,
+    HomeModule,
     AlumnosModule,
-    MatSidenavModule,
-    MatListModule,
-    MatToolbarModule
+    CursosModule,
+    NotFoundModule
   ],
   exports: [
     DashboardComponent

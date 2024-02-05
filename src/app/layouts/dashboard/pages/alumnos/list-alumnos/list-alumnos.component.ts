@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { Alumno } from 'src/app/models/alumno.model';
+import { Alumno } from 'src/app/core/models/alumno.model';
 
 @Component({
   selector: 'app-list-alumnos',
@@ -9,10 +8,14 @@ import { Alumno } from 'src/app/models/alumno.model';
 })
 export class ListAlumnosComponent {
   @Input() data:Alumno[] =  [];
-  @Output() onSelect:EventEmitter<Alumno> = new EventEmitter()
-  public columns: string[] = ['nombreCompleto', 'fechaNacimiento', 'email', "ver"];
+  @Output() onSelect:EventEmitter<Alumno> = new EventEmitter();
+  @Output() onDelete:EventEmitter<Alumno> = new EventEmitter();
+  public columns: string[] = ['nombreCompleto', 'fechaNacimiento', 'email', "actions"];
 
   handleSelect(alumno:Alumno):void {
     this.onSelect.emit(alumno);
+  }
+  handleDelete(alumno:Alumno):void {
+    this.onDelete.emit(alumno);
   }
 }
