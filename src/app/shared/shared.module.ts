@@ -14,6 +14,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import { TituloDirective } from './titulo.directive';
 import { FullNamePipe } from './full-name.pipe';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 @NgModule({
@@ -32,7 +35,9 @@ import { FullNamePipe } from './full-name.pipe';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule,
+    MatSelectModule
   ],
   exports: [
     TituloDirective,
@@ -49,7 +54,9 @@ import { FullNamePipe } from './full-name.pipe';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule,
+    MatSelectModule
   ]
 })
 export class SharedModule { }

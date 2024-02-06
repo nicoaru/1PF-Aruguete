@@ -5,6 +5,7 @@ import { ListCursosComponent } from './list-cursos/list-cursos.component';
 import { CursosComponent } from './cursos.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ListInscriptosComponent } from './list-inscriptos/list-inscriptos.component';
 
 
 
@@ -12,7 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     AbmCursosComponent,
     ListCursosComponent,
-    CursosComponent
+    CursosComponent,
+    ListInscriptosComponent
   ],
   imports: [
     CommonModule,

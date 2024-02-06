@@ -1,6 +1,6 @@
 <div mat-dialog-title *ngIf="data.alumno">
     <div class="d-flex justify-content-between">
-        <h1 appTitulo>{{data.alumno | fullName}}</h1>
+        <h1 appTitulo>{{alumno | fullName}}</h1>
         <button mat-icon-button [mat-dialog-close]="persistio">
             <mat-icon class="material-symbols-outlined">cancel</mat-icon></button>
     </div>
@@ -14,44 +14,78 @@
 </div>
 
 <mat-dialog-content class="mat-typography py-2">
-    <form [formGroup]="form">
-        <div class="row g-2">
-            <mat-form-field appearance="outline" class="col-6">
-                <mat-label>Nombre</mat-label>
-                <input matInput [readonly]="!isEditable" formControlName="nombre" type="text" placeholder="Nombre">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-6">
-                <mat-label>Apellido</mat-label>
-                <input matInput [readonly]="!isEditable" formControlName="apellido" type="text" placeholder="Apellido">
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="col-12">
-                <mat-label>Fecha de nacimiento</mat-label>
-                <input matInput [readonly]="!isEditable" [matDatepicker]="datePicker" formControlName="fechaNacimiento">
-                <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
-                <mat-datepicker [disabled]="!isEditable" #datePicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-6">
-                <mat-label>Teléfono</mat-label>
-                <input matInput [readonly]="!isEditable" formControlName="telefono" type="text" placeholder="Teléfono">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-6">
-                <mat-label>Email</mat-label>
-                <input matInput [readonly]="!isEditable" formControlName="email" type="text" placeholder="Email">
-            </mat-form-field>
-        </div>
-    </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <div *ngIf="alumno">
-        <button mat-stroked-button *ngIf="isEditable" [disabled]="form.invalid" (click)="handleUpdate()">Guardar</button>
-        <button mat-stroked-button *ngIf="!isEditable" (click)="toggleEdit()">Editar</button>
-        <button mat-stroked-button *ngIf="isEditable" (click)="undoChanges(); toggleEdit()">Cancelar</button>
-    
-    </div>
-    <div *ngIf="!alumno">
-        <button mat-stroked-button [disabled]="!form.valid" (click)="handleCreate()">Guardar</button>
-        <button mat-stroked-button [mat-dialog-close]="persistio">Cancelar</button>
-    </div>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="!data.alumno">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Info
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="form">
+                <div class="row g-2">
+                    <mat-form-field appearance="outline" class="col-6">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput [readonly]="!isEditable" formControlName="nombre" type="text" placeholder="Nombre">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-6">
+                        <mat-label>Apellido</mat-label>
+                        <input matInput [readonly]="!isEditable" formControlName="apellido" type="text" placeholder="Apellido">
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="col-12">
+                        <mat-label>Fecha de nacimiento</mat-label>
+                        <input matInput [readonly]="!isEditable" [matDatepicker]="datePicker" formControlName="fechaNacimiento">
+                        <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker [disabled]="!isEditable" #datePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-6">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput [readonly]="!isEditable" formControlName="telefono" type="text" placeholder="Teléfono">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-6">
+                        <mat-label>Email</mat-label>
+                        <input matInput [readonly]="!isEditable" formControlName="email" type="text" placeholder="Email">
+                    </mat-form-field>
+                </div>
+            </form>
+            <div *ngIf="alumno">
+                <button mat-stroked-button *ngIf="isEditable" [disabled]="form.invalid" (click)="handleUpdate()">Guardar</button>
+                <button mat-stroked-button *ngIf="!isEditable" (click)="toggleEdit()">Editar</button>
+                <button mat-stroked-button *ngIf="isEditable" (click)="undoChanges(); toggleEdit()">Cancelar</button>
+            </div>
+            <div *ngIf="!alumno">
+                <button mat-stroked-button [disabled]="!form.valid" (click)="handleCreate()">Guardar</button>
+                <button mat-stroked-button [mat-dialog-close]="persistio">Cancelar</button>
+            </div>
+        </mat-expansion-panel>
 
-</mat-dialog-actions>
+        <mat-expansion-panel *ngIf="data.alumno">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Mis cursos
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <app-list-cursos-inscripto [data]="inscripcionesData" (onDelete)="handleDeleteInscripcion($event.id!)"></app-list-cursos-inscripto>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="data.alumno">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Inscribirse
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div>
+                <mat-form-field appearance="outline" >
+                    <mat-label>{{cursosDisponibles.length>0 ?  "Elegir curso..." : "No hay cursos disponible..."}}</mat-label>
+                    <mat-select [(ngModel)]="cursoAInscribir" [disabled]="cursosDisponibles.length<1">
+                        <mat-option *ngFor="let curso of cursosDisponibles" [value]="curso">
+                            {{curso.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-stroked-button (click)="handleInscribir(cursoAInscribir)" [disabled]="cursosDisponibles.length<1">Inscribirse</button>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</mat-dialog-content>

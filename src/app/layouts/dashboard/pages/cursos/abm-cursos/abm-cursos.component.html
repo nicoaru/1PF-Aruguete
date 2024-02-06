@@ -1,6 +1,6 @@
 <div mat-dialog-title *ngIf="data.curso">
     <div class="d-flex justify-content-between">
-        <h1 appTitulo>{{data.curso.nombre}}</h1>
+        <h1 appTitulo>{{curso?.nombre}}</h1>
         <button mat-icon-button [mat-dialog-close]="persistio">
             <mat-icon class="material-symbols-outlined">cancel</mat-icon></button>
     </div>
@@ -14,43 +14,63 @@
 </div>
 
 <mat-dialog-content class="mat-typography py-2">
-    <form [formGroup]="form">
-        <div class="row g-2">
-            <mat-form-field appearance="outline" class="col-4">
-                <mat-label>Nombre</mat-label>
-                <input matInput [readonly]="!isEditable" formControlName="nombre" type="text" placeholder="Nombre">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-4">
-                <mat-label>Fecha inicio</mat-label>
-                <input matInput [readonly]="!isEditable" [matDatepicker]="fechaInicioPicker" formControlName="fechaInicio">
-                <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix [for]="fechaInicioPicker"></mat-datepicker-toggle>
-                <mat-datepicker [disabled]="!isEditable" #fechaInicioPicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-4">
-                <mat-label>Fecha fin</mat-label>
-                <input matInput [readonly]="!isEditable" [matDatepicker]="fechaFinPicker" formControlName="fechaFin">
-                <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix [for]="fechaFinPicker"></mat-datepicker-toggle>
-                <mat-datepicker [disabled]="!isEditable" #fechaFinPicker></mat-datepicker>
-            </mat-form-field>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="!data.curso">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Info
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="form">
+                <div class="row g-2">
+                    <mat-form-field appearance="outline" class="col-4">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput [readonly]="!isEditable" formControlName="nombre" type="text" placeholder="Nombre">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-4">
+                        <mat-label>Fecha inicio</mat-label>
+                        <input matInput [readonly]="!isEditable" [matDatepicker]="fechaInicioPicker"
+                            formControlName="fechaInicio">
+                        <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix
+                            [for]="fechaInicioPicker"></mat-datepicker-toggle>
+                        <mat-datepicker [disabled]="!isEditable" #fechaInicioPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-4">
+                        <mat-label>Fecha fin</mat-label>
+                        <input matInput [readonly]="!isEditable" [matDatepicker]="fechaFinPicker" formControlName="fechaFin">
+                        <mat-datepicker-toggle [disabled]="!isEditable" matIconSuffix
+                            [for]="fechaFinPicker"></mat-datepicker-toggle>
+                        <mat-datepicker [disabled]="!isEditable" #fechaFinPicker></mat-datepicker>
+                    </mat-form-field>
+        
+                    <mat-form-field appearance="outline" class="col-12">
+                        <mat-label>Descripción</mat-label>
+                        <textarea matInput placeholder="Descripción del curso..." [readonly]="!isEditable"
+                            formControlName="descripcion"></textarea>
+                    </mat-form-field>
+                </div>
+            </form>
+            <div *ngIf="curso">
+                <button mat-stroked-button *ngIf="isEditable" [disabled]="form.invalid"
+                    (click)="handleUpdate()">Guardar</button>
+                <button mat-stroked-button *ngIf="!isEditable" (click)="toggleEdit()">Editar</button>
+                <button mat-stroked-button *ngIf="isEditable" (click)="undoChanges(); toggleEdit()">Cancelar</button>
+            </div>
+            <div *ngIf="!curso">
+                <button mat-stroked-button [disabled]="!form.valid" (click)="handleCreate()">Guardar</button>
+                <button mat-stroked-button [mat-dialog-close]="persistio">Cancelar</button>
+            </div>
+        </mat-expansion-panel>
 
-            <mat-form-field appearance="outline" class="col-12">
-                <mat-label>Descripción</mat-label>
-                <textarea matInput placeholder="Descripción del curso..." [readonly]="!isEditable" formControlName="descripcion"></textarea>
-            </mat-form-field>
+        <mat-expansion-panel *ngIf="data.curso">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Inscriptos
+                </mat-panel-title>
+            </mat-expansion-panel-header>
 
-        </div>
-    </form>
+            <app-list-inscriptos [data]="inscripcionesData" (onDelete)="handleDeleteInscripto($event.id!)"></app-list-inscriptos>
+        </mat-expansion-panel>
+    </mat-accordion>
+
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <div *ngIf="curso">
-        <button mat-stroked-button *ngIf="isEditable" [disabled]="form.invalid" (click)="handleUpdate()">Guardar</button>
-        <button mat-stroked-button *ngIf="!isEditable" (click)="toggleEdit()">Editar</button>
-        <button mat-stroked-button *ngIf="isEditable" (click)="undoChanges(); toggleEdit()">Cancelar</button>
-    
-    </div>
-    <div *ngIf="!curso">
-        <button mat-stroked-button [disabled]="!form.valid" (click)="handleCreate()">Guardar</button>
-        <button mat-stroked-button [mat-dialog-close]="persistio">Cancelar</button>
-    </div>
-
-</mat-dialog-actions>

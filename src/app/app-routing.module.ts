@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: "dashboard/notFound"
+    redirectTo: "dashboard/alumnos"
   }
 ];
 

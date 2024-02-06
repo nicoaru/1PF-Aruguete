@@ -68,12 +68,13 @@ export class AlumnosService {
 
   create(alumno:Alumno):Observable<Alumno|null> {
     alumno.id = this.lastId+1;
+    this.lastId++;
     this.alumnosData.push(alumno) ;
     return of(alumno);
   }
 
   deleteById(id:number):Observable<Alumno|null> {
-    const ix:number = this.alumnosData.findIndex(elem => elem.id = id);
+    const ix:number = this.alumnosData.findIndex(elem => elem.id === id);
     const alumnoDeleted:Alumno|null = this.alumnosData.splice(ix, 1)[0];
     return of(alumnoDeleted);
   }

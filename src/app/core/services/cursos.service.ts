@@ -57,12 +57,13 @@ export class CursosService {
 
   create(curso:Curso):Observable<Curso|null> {
     curso.id = this.lastId+1;
+    this.lastId++;
     this.cursosData.push(curso) ;
     return of(curso);
   }
 
   deleteById(id:number):Observable<Curso|null> {
-    const ix:number = this.cursosData.findIndex(elem => elem.id = id);
+    const ix:number = this.cursosData.findIndex(elem => elem.id === id);
     const cursoDeleted:Curso|null = this.cursosData.splice(ix, 1)[0];
     return of(cursoDeleted);
   }

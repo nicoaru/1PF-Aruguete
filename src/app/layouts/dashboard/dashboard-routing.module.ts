@@ -21,6 +21,10 @@ const routes: Routes = [
     component: CursosComponent
   },
   {
+    path:"home",
+    component: HomeComponent
+  },
+  {
     path: "**",
     component: NotFoundComponent
   }

@@ -3,7 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { Curso } from 'src/app/core/models/curso.model';
+import { InscripcionDto } from 'src/app/core/models/inscripcion.dto';
 import { CursosService } from 'src/app/core/services/cursos.service';
+import { InscripcionesService } from './../../../../../core/services/inscripciones.service';
+import { Inscripcion } from 'src/app/core/models/inscripcion.model';
 
 interface IAbmCursoData {
   curso:Curso
@@ -19,9 +22,12 @@ export class AbmCursosComponent {
   public isEditable:boolean;
   public form:FormGroup;
   public persistio:boolean = false;
+  public inscripcionesData:InscripcionDto[] = [];
+
 
   constructor(
     private cursosService:CursosService,
+    private inscripcionesService:InscripcionesService,
     private formBuilder:FormBuilder,
     public dialogRef: MatDialogRef<AbmCursosComponent, boolean>,
     @Inject(MAT_DIALOG_DATA) public data:IAbmCursoData
@@ -40,6 +46,13 @@ export class AbmCursosComponent {
 
   ngOnInit(): void {
     this.setForm(this.curso);
+    this.getInscriptosData();
+  }
+
+  async getInscriptosData():Promise<void> {
+    const data = await firstValueFrom(await this.inscripcionesService.getByCursoId(this.curso?.id!));
+    this.inscripcionesData = [...data]
+    console.log("Inscriptos data: ", this.inscripcionesData);
   }
 
   toggleEdit():void {
@@ -69,12 +82,12 @@ export class AbmCursosComponent {
   }
 
   async handleUpdate():Promise<void> {
-    this.curso = this.cursoFromForm();
+    const cursoUpdated = this.cursoFromForm();
     console.log("updateCurso - this.curso: ", this.curso);
     const id = this.data.curso.id;
 
     try {
-      this.curso = await firstValueFrom(this.cursosService.updateById(id!, this.curso));
+      this.curso = await firstValueFrom(this.cursosService.updateById(id!, cursoUpdated));
       this.toggleEdit();
       this.persistio = true;
     }
@@ -101,6 +114,18 @@ export class AbmCursosComponent {
 
   undoChanges() {
     this.setForm(this.curso);
+  }
+
+  async handleDeleteInscripto(id:number):Promise<void> {
+    try {
+      const deleted:InscripcionDto|null = await firstValueFrom(await this.inscripcionesService.deleteById(id));
+      console.log("Deleted inscripcion: ", deleted);
+      this.getInscriptosData();
+    }
+    catch (err:any) {
+      console.log("Error eliminando inscripción: ", err.message);
+      
+    }
   }
 
 }
