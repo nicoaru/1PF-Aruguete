@@ -14,6 +14,10 @@ const routes: Routes = [
     redirectTo: 'home'
   },
   {
+    path:"home",
+    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule)
+  },
+  {
     path: "alumnos",
     loadChildren: () => import('./pages/alumnos/alumnos.module').then((m) => m.AlumnosModule)
   },
@@ -22,8 +26,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cursos/cursos.module').then((m) => m.CursosModule)
   },
   {
-    path:"home",
-    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule)
+    path: "usuarios",
+    loadChildren: () => import('./pages/usuarios/usuarios.module').then((m) => m.UsuariosModule)
   },
   {
     path: "**",

@@ -16,7 +16,7 @@ import { TituloDirective } from './titulo.directive';
 import { FullNamePipe } from './full-name.pipe';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
-
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -37,7 +37,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatIconModule,
     MatDialogModule,
     MatExpansionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCardModule
   ],
   exports: [
     TituloDirective,
@@ -56,7 +57,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatIconModule,
     MatDialogModule,
     MatExpansionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCardModule
   ]
 })
 export class SharedModule { }

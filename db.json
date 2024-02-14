@@ -148,5 +148,21 @@
       "fechaInscripcion": "2024-02-14T03:11:53.095Z"
     }
   ],
-  "users": []
+  "users": [
+    {
+      "username": "nicoaru",
+      "password": "1234",
+      "role": "USER"
+    },
+    {
+      "username": "admin",
+      "password": "5678",
+      "role": "ADMIN"
+    },
+    {
+      "username": "user2",
+      "password": "1234",
+      "role": "USER"
+    }
+  ]
 }
