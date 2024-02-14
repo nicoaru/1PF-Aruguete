@@ -53,13 +53,14 @@ export class AbmAlumnosComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.setForm(this.alumno);
     await this.getCursosData();
-    await this.getInscriptosData();
+    await this.getCursosInscriptoData();
   }
 
-  async getInscriptosData():Promise<void> {
-    const data = await firstValueFrom(await this.inscripcionesService.getByAlumnoId(this.alumno?.id!));
+  async getCursosInscriptoData():Promise<void> {
+    const data = await firstValueFrom( this.inscripcionesService.getByAlumnoId(this.alumno?.id!));
     this.inscripcionesData = [...data]
     this.filtrarCursosDisponibles();
+    console.log("Incripciones: ", this.inscripcionesData);
   }
 
   async getCursosData():Promise<void> {
@@ -69,7 +70,7 @@ export class AbmAlumnosComponent implements OnInit {
 
   filtrarCursosDisponibles():void {
     this.cursosDisponibles = this.cursosData.filter((curso:Curso) => {
-      let estaDisponible:boolean = !this.inscripcionesData.find((inscr:InscripcionDto) => inscr.curso?.id === curso.id);
+      let estaDisponible:boolean = !this.inscripcionesData.find((inscr:InscripcionDto) => inscr.course?.id === curso.id);
       return estaDisponible;
     })
   }
@@ -141,7 +142,7 @@ export class AbmAlumnosComponent implements OnInit {
     try {
       const deleted:InscripcionDto|null = await firstValueFrom(await this.inscripcionesService.deleteById(id));
       console.log("Deleted inscripcion: ", deleted);
-      this.getInscriptosData();
+      this.getCursosInscriptoData();
     }
     catch (err:any) {
       console.log("Error eliminando inscripción: ", err.message);
@@ -154,13 +155,13 @@ export class AbmAlumnosComponent implements OnInit {
     }
     else {
       const nuevaInscripcion:InscripcionDto = new InscripcionDto;
-      nuevaInscripcion.alumno = this.alumno || null;
-      nuevaInscripcion.curso = curso || null;
+      nuevaInscripcion.student = this.alumno || null;
+      nuevaInscripcion.course = curso || null;
       nuevaInscripcion.fechaInscripcion = new Date();
       
-      const result = await firstValueFrom(await this.inscripcionesService.create(nuevaInscripcion));
+      const result = await firstValueFrom(this.inscripcionesService.create(nuevaInscripcion));
       this.cursoAInscribir = null;
-      await this.getInscriptosData();
+      await this.getCursosInscriptoData();
     }
   }
 }

@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ListCursosInscriptoComponent } from './list-cursos-inscripto/list-cursos-inscripto.component';
+import { AlumnosRoutingModule } from './alumnos-routing.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ListCursosInscriptoComponent } from './list-cursos-inscripto/list-curso
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    AlumnosRoutingModule
   ],
   exports: [
     AlumnosComponent

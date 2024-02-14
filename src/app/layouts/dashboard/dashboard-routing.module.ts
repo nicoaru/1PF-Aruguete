@@ -10,23 +10,24 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 const routes: Routes = [
   {
     path: "",
-    component: HomeComponent
+    pathMatch: 'full',
+    redirectTo: 'home'
   },
   {
     path: "alumnos",
-    component: AlumnosComponent
+    loadChildren: () => import('./pages/alumnos/alumnos.module').then((m) => m.AlumnosModule)
   },
   {
     path: "cursos",
-    component: CursosComponent
+    loadChildren: () => import('./pages/cursos/cursos.module').then((m) => m.CursosModule)
   },
   {
     path:"home",
-    component: HomeComponent
+    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule)
   },
   {
     path: "**",
-    component: NotFoundComponent
+    loadChildren: () => import('./pages/not-found/not-found.module').then((m) => m.NotFoundModule)
   }
 ];
 

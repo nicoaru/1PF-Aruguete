@@ -1,0 +1,137 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "email": "juanpe@gmail.com",
+      "telefono": "4879-9856",
+      "fechaNacimiento": "1987-11-05T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "nombre": "Juana",
+      "apellido": "Belardez",
+      "email": "juanabe@gmail.com",
+      "telefono": "4456-4854",
+      "fechaNacimiento": "1968-10-04T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "nombre": "Alberto",
+      "apellido": "Brener",
+      "email": "albertobre@gmail.com",
+      "telefono": "4168-4876",
+      "fechaNacimiento": "1975-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "nombre": "Cacho",
+      "apellido": "Taberla",
+      "email": "cachotal@gmail.com",
+      "telefono": "4785-5846",
+      "fechaNacimiento": "1987-06-06T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "nombre": "Maria",
+      "apellido": "Pérez",
+      "email": "mariape@gmail.com",
+      "telefono": "4785-5486",
+      "fechaNacimiento": "1994-10-10T00:00:00.000Z"
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "nombre": "React Js",
+      "descripcion": "Descubre el fascinante mundo de ReactJS, la biblioteca de JavaScript que ha revolucionado el desarrollo de interfaces de usuario en la web. Este curso te sumergirá en los fundamentos y las mejores prácticas de React, proporcionándote las habilidades necesarias para crear aplicaciones web interactivas y eficientes.",
+      "fechaInicio": "2024-03-21T00:00:00.000Z",
+      "fechaFin": "2024-05-21T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "nombre": "Angular",
+      "descripcion": "¡Sumérgete en el emocionante mundo de Angular y domina una de las plataformas de desarrollo web más poderosas y populares disponibles en la actualidad! Este curso te llevará desde los conceptos básicos hasta las técnicas avanzadas de Angular, permitiéndote construir aplicaciones web modernas, robustas y escalables.",
+      "fechaInicio": "2024-03-08T00:00:00.000Z",
+      "fechaFin": "2024-05-08T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "nombre": "NestJs",
+      "descripcion": "¡Explora la elegancia de NestJS, un framework de desarrollo en Node.js que combina lo mejor de Angular con las capacidades de Node para crear aplicaciones backend robustas y escalables! Este curso te sumergirá en el mundo de NestJS, desde los conceptos fundamentales hasta las técnicas avanzadas, permitiéndote construir servidores eficientes y modularizados.",
+      "fechaInicio": "2024-04-15T00:00:00.000Z",
+      "fechaFin": "2024-06-21T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "nombre": "SQL",
+      "descripcion": "Adéntrate en el mundo de las bases de datos relacionales con nuestro curso de SQL, diseñado para proporcionarte los conocimientos esenciales y las habilidades prácticas necesarias para gestionar eficientemente datos en sistemas de gestión de bases de datos (DBMS). Desde la creación de tablas hasta consultas avanzadas, este curso te equipará con las herramientas necesarias para trabajar con datos de manera efectiva.",
+      "fechaInicio": "2024-05-21T00:00:00.000Z",
+      "fechaFin": "2024-07-12T00:00:00.000Z"
+    }
+  ],
+  "enrollments": [
+    {
+      "id": 1,
+      "studentId": 1,
+      "courseId": 3,
+      "fechaInscripcion": "2023-11-23T22:35:25.237Z"
+    },
+    {
+      "id": 2,
+      "studentId": 3,
+      "courseId": 2,
+      "fechaInscripcion": "2024-02-02T02:36:57.259Z"
+    },
+    {
+      "id": 3,
+      "studentId": 4,
+      "courseId": 3,
+      "fechaInscripcion": "2023-12-23T01:18:17.700Z"
+    },
+    {
+      "id": 4,
+      "studentId": 4,
+      "courseId": 2,
+      "fechaInscripcion": "2024-02-02T16:27:45.343Z"
+    },
+    {
+      "id": 5,
+      "studentId": 3,
+      "courseId": 3,
+      "fechaInscripcion": "2023-12-31T17:55:12.611Z"
+    },
+    {
+      "id": 6,
+      "studentId": 2,
+      "courseId": 3,
+      "fechaInscripcion": "2024-01-04T18:27:02.587Z"
+    },
+    {
+      "id": 7,
+      "studentId": 1,
+      "courseId": 1,
+      "fechaInscripcion": "2023-12-06T15:57:59.238Z"
+    },
+    {
+      "id": 8,
+      "studentId": 1,
+      "courseId": 4,
+      "fechaInscripcion": "2024-01-29T06:24:43.222Z"
+    },
+    {
+      "id": 9,
+      "studentId": 2,
+      "courseId": 4,
+      "fechaInscripcion": "2023-12-31T21:06:32.913Z"
+    },
+    {
+      "id": 10,
+      "studentId": 4,
+      "courseId": 1,
+      "fechaInscripcion": "2023-11-25T22:12:38.934Z"
+    }
+  ],
+  "users": []
+}

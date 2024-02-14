@@ -6,6 +6,7 @@ import { CursosComponent } from './cursos.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ListInscriptosComponent } from './list-inscriptos/list-inscriptos.component';
+import { CursosRoutingModule } from './cursos-routing.module';
 
 
 
@@ -19,7 +20,8 @@ import { ListInscriptosComponent } from './list-inscriptos/list-inscriptos.compo
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CursosRoutingModule
   ]
 })
 export class CursosModule { }

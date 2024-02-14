@@ -5,6 +5,8 @@ import { Observable, firstValueFrom, of } from 'rxjs';
 import { InscripcionDto } from '../models/inscripcion.dto';
 import { CursosService } from './cursos.service';
 import { AlumnosService } from './alumnos.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -12,115 +14,137 @@ import { AlumnosService } from './alumnos.service';
   providedIn: 'root'
 })
 export class InscripcionesService {
-  private inscripcionesData:Inscripcion[] = [];
-  private lastId:number;
+  private environment = environment;
+  // private inscripcionesData:Inscripcion[] = [];
+  // private lastId:number;
 
   constructor(
-    private utilsService:UtilsService,
-    private cursosService:CursosService,
-    private alumnosService:AlumnosService
+    private httpClient:HttpClient
   ) {
-    this.inscripcionesData = this.generateInscripciones(10);
-    this.lastId = this.inscripcionesData.sort((a:Inscripcion, b:Inscripcion) => a.id! - b.id!)[this.inscripcionesData.length-1].id!;
+    // this.inscripcionesData = this.generateInscripciones(10);
+    // this.lastId = this.inscripcionesData.sort((a:Inscripcion, b:Inscripcion) => a.id! - b.id!)[this.inscripcionesData.length-1].id!;
 
-    console.log("Inscripciones: ", this.inscripcionesData);
+    // console.log("Inscripciones: ", this.inscripcionesData);
     
   }
 
-  private generateInscripciones = (n:number):Inscripcion[] => {
-    const fechaInicioInscripciones = new Date(new Date().setMonth(new Date().getMonth() - 3));
-    const data:Inscripcion[] = [];
+  // private generateInscripciones = (n:number):Inscripcion[] => {
+  //   const fechaInicioInscripciones = new Date(new Date().setMonth(new Date().getMonth() - 3));
+  //   const data:Inscripcion[] = [];
     
-    for (let ix = 0; ix < n; ix++) {
-      let nuevaInscripcion:Inscripcion;
-      let yaInscripto:boolean = false;
+  //   for (let ix = 0; ix < n; ix++) {
+  //     let nuevaInscripcion:Inscripcion;
+  //     let yaInscripto:boolean = false;
 
-      do {     
-        nuevaInscripcion = new Inscripcion;   
-        nuevaInscripcion.id = ix+1;
-        nuevaInscripcion.idAlumno = Math.ceil(Math.random()*4);
-        nuevaInscripcion.idCurso = Math.ceil(Math.random()*4);
-        nuevaInscripcion.fechaInscripcion = this.utilsService.generateRandomDate(fechaInicioInscripciones, new Date());
+  //     do {     
+  //       nuevaInscripcion = new Inscripcion;   
+  //       nuevaInscripcion.id = ix+1;
+  //       nuevaInscripcion.idAlumno = Math.ceil(Math.random()*4);
+  //       nuevaInscripcion.idCurso = Math.ceil(Math.random()*4);
+  //       nuevaInscripcion.fechaInscripcion = this.utilsService.generateRandomDate(fechaInicioInscripciones, new Date());
 
-        yaInscripto = !!data.find((elem:Inscripcion) => elem.idAlumno === nuevaInscripcion.idAlumno && elem.idCurso === nuevaInscripcion.idCurso);
-      } while (yaInscripto)
+  //       yaInscripto = !!data.find((elem:Inscripcion) => elem.idAlumno === nuevaInscripcion.idAlumno && elem.idCurso === nuevaInscripcion.idCurso);
+  //     } while (yaInscripto)
       
-      data.push(nuevaInscripcion);
-    }
-    return data;
-  }
+  //     data.push(nuevaInscripcion);
+  //   }
+  //   return data;
+  // }
 
-  private async toDto(entity:Inscripcion):Promise<InscripcionDto> {
-    const dto = new InscripcionDto;
-    dto.id = entity.id;
-    dto.alumno = entity.idAlumno ? await firstValueFrom(this.alumnosService.getById(entity.idAlumno)) : null;
-    dto.curso = entity.idCurso ? await firstValueFrom(this.cursosService.getById(entity.idCurso)) : null;
-    dto.fechaInscripcion = entity.fechaInscripcion;
-    return dto;
-  }
+  // private async toDto(entity:Inscripcion):Promise<InscripcionDto> {
+  //   const dto = new InscripcionDto;
+  //   dto.id = entity.id;
+  //   dto.alumno = entity.idAlumno ? await firstValueFrom(this.alumnosService.getById(entity.idAlumno)) : null;
+  //   dto.curso = entity.idCurso ? await firstValueFrom(this.cursosService.getById(entity.idCurso)) : null;
+  //   dto.fechaInscripcion = entity.fechaInscripcion;
+  //   return dto;
+  // }
 
-  private async toDtoArray(entityList:Inscripcion[]):Promise<InscripcionDto[]> {
-    console.log("EntityList: ", entityList);
+  // private async toDtoArray(entityList:Inscripcion[]):Promise<InscripcionDto[]> {
+  //   console.log("EntityList: ", entityList);
     
-    const dtoList:InscripcionDto[] = await Promise.all(entityList?.map(async (elem) => await this.toDto(elem)));
+  //   const dtoList:InscripcionDto[] = await Promise.all(entityList?.map(async (elem) => await this.toDto(elem)));
 
-    return dtoList;
-  }
+  //   return dtoList;
+  // }
 
-  async getAll():Promise<Observable<InscripcionDto[]>> {
-    console.log("Inscripciones Data en service: ", this.inscripcionesData);
-    const result:InscripcionDto[] = await this.toDtoArray(this.inscripcionesData);
-    console.log("Result: ", result);
+  getAll():Observable<InscripcionDto[]> {
+    return this.httpClient.get<InscripcionDto[]>(this.environment.apiURL+'/enrollments?_expand=student&_expand=course');
+
+    // console.log("Inscripciones Data en service: ", this.inscripcionesData);
+    // const result:InscripcionDto[] = await this.toDtoArray(this.inscripcionesData);
+    // console.log("Result: ", result);
     
-    return of(result);
+    // return of(result);
   }
 
-  async getById(id:number):Promise<Observable<InscripcionDto|null>> {
-    const inscripcion:Inscripcion|null = this.inscripcionesData.find(elem => elem.id === id) || null;
-    if(!inscripcion) return of(null);
-    return of(await this.toDto(inscripcion));
+  // getAllWithoutRelations():Observable<Inscripcion[]> {
+
+  //   console.log("Inscripciones Data en service: ", this.inscripcionesData);
+  //   const result:Inscripcion[] = this.inscripcionesData;
+  //   console.log("Result: ", result);
+    
+  //   return of(result);
+  // }
+
+  getById(id:number):Observable<InscripcionDto|null> {
+    return this.httpClient.get<InscripcionDto|null>(this.environment.apiURL+'/enrollments/'+id+'?_expand=student&_expand=course');
+
+    // const inscripcion:Inscripcion|null = this.inscripcionesData.find(elem => elem.id === id) || null;
+    // if(!inscripcion) return of(null);
+    // return of(await this.toDto(inscripcion));
   }
 
-  async getByAlumnoId(idAlumno:number):Promise<Observable<InscripcionDto[]>> {
-    const inscripciones:Inscripcion[]|null = this.inscripcionesData.filter(elem => elem.idAlumno === idAlumno) || null;
-    return of(await this.toDtoArray(inscripciones));
+  getByAlumnoId(idAlumno:number):Observable<InscripcionDto[]> {
+    return this.httpClient.get<InscripcionDto[]>(`${this.environment.apiURL}/enrollments?studentId=${idAlumno}&_expand=course&_expand=student`);
+    
+    // const inscripciones:Inscripcion[]|null = this.inscripcionesData.filter(elem => elem.idAlumno === idAlumno) || null;
+    // return of(await this.toDtoArray(inscripciones));
   }
 
-  async getByCursoId(idCurso:number):Promise<Observable<InscripcionDto[]>> {
-    const inscripciones:Inscripcion[]|null = this.inscripcionesData.filter(elem => elem.idCurso === idCurso) || null;
-    return of(await this.toDtoArray(inscripciones));
+  getByCursoId(idCurso:number):Observable<InscripcionDto[]> {
+    return this.httpClient.get<InscripcionDto[]>(`${this.environment.apiURL}/enrollments?courseId=${idCurso}&_expand=course&_expand=student`);
+    
+    // const inscripciones:Inscripcion[]|null = this.inscripcionesData.filter(elem => elem.idCurso === idCurso) || null;
+    // return of(await this.toDtoArray(inscripciones));
   }
 
-  async create(inscripcionDto:InscripcionDto):Promise<Observable<InscripcionDto|null>> {
-    const inscripcion:Inscripcion = InscripcionDto.toEntity(inscripcionDto);
-    inscripcion.id = this.lastId+1;
-    this.lastId++;
-    this.inscripcionesData.push(inscripcion);
+  create(inscripcion:InscripcionDto):Observable<InscripcionDto|null> {
+    const entity = InscripcionDto.toEntity(inscripcion);
+    return this.httpClient.post<InscripcionDto|null>(this.environment.apiURL+'/enrollments', entity);
 
-    return of(await this.toDto(inscripcion));
+    // const inscripcion:Inscripcion = InscripcionDto.toEntity(inscripcionDto);
+    // inscripcion.id = this.lastId+1;
+    // this.lastId++;
+    // this.inscripcionesData.push(inscripcion);
+
+    // return of(await this.toDto(inscripcion));
   }
 
   async deleteById(id:number):Promise<Observable<InscripcionDto|null>> {
-    const ix:number = this.inscripcionesData.findIndex(elem => elem.id === id);
-    console.log("## ix to delete: ", ix);
+    return this.httpClient.delete<InscripcionDto|null>(this.environment.apiURL+'/enrollments/'+id);
+
+    // const ix:number = this.inscripcionesData.findIndex(elem => elem.id === id);
+    // console.log("## ix to delete: ", ix);
     
-    const inscripcionDeleted:Inscripcion|null = this.inscripcionesData.splice(ix, 1)[0];
-    console.log("InscripcionesData en service: ", this.inscripcionesData);
+    // const inscripcionDeleted:Inscripcion|null = this.inscripcionesData.splice(ix, 1)[0];
+    // console.log("InscripcionesData en service: ", this.inscripcionesData);
     
-    return of(await this.toDto(inscripcionDeleted));
+    // return of(await this.toDto(inscripcionDeleted));
   }
 
   async updateById(id:number, inscripcionUpdated:InscripcionDto):Promise<Observable<InscripcionDto|null>> {
-    const ix:number = this.inscripcionesData.findIndex(elem => elem.id! === id);
+    return this.httpClient.put<InscripcionDto|null>(this.environment.apiURL+'/students/'+id, inscripcionUpdated);
 
-    if(ix >= 0) {
-      inscripcionUpdated.id = id;
-      this.inscripcionesData.splice(ix, 1, InscripcionDto.toEntity(inscripcionUpdated))
-      return of(inscripcionUpdated);
-    }
-    else {
-      return of(null);
-    }
+    // const ix:number = this.inscripcionesData.findIndex(elem => elem.id! === id);
+
+    // if(ix >= 0) {
+    //   inscripcionUpdated.id = id;
+    //   this.inscripcionesData.splice(ix, 1, InscripcionDto.toEntity(inscripcionUpdated))
+    //   return of(inscripcionUpdated);
+    // }
+    // else {
+    //   return of(null);
+    // }
   }
-
 }

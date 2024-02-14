@@ -50,7 +50,7 @@ export class AbmCursosComponent {
   }
 
   async getInscriptosData():Promise<void> {
-    const data = await firstValueFrom(await this.inscripcionesService.getByCursoId(this.curso?.id!));
+    const data = await firstValueFrom(this.inscripcionesService.getByCursoId(this.curso?.id!));
     this.inscripcionesData = [...data]
     console.log("Inscriptos data: ", this.inscripcionesData);
   }
