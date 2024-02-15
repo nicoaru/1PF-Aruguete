@@ -21,6 +21,6 @@ export class AuthComponent {
   }
 
   handleLogin():void {
-    
+    this.authService.login(this.form.value);
   }
 }

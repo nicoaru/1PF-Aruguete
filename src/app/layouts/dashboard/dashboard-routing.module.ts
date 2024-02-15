@@ -6,6 +6,7 @@ import { AbmCursosComponent } from './pages/cursos/abm-cursos/abm-cursos.compone
 import { CursosComponent } from './pages/cursos/cursos.component';
 import { DashboardComponent } from './dashboard.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { adminGuard } from 'src/app/core/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -27,7 +28,8 @@ const routes: Routes = [
   },
   {
     path: "usuarios",
-    loadChildren: () => import('./pages/usuarios/usuarios.module').then((m) => m.UsuariosModule)
+    loadChildren: () => import('./pages/usuarios/usuarios.module').then((m) => m.UsuariosModule),
+    canActivate: [adminGuard]
   },
   {
     path: "**",

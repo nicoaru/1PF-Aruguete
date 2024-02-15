@@ -150,19 +150,34 @@
   ],
   "users": [
     {
+      "id": 1,
       "username": "nicoaru",
       "password": "1234",
-      "role": "USER"
+      "email": "nicoaru@gmail.com",
+      "name": "Nico",
+      "lastname": "Aru",
+      "role": "USER",
+      "token": "fdslkj156sfdv123"
     },
     {
+      "id": 2,
       "username": "admin",
       "password": "5678",
-      "role": "ADMIN"
+      "email": "admin@gmail.com",
+      "name": "Pedro",
+      "lastname": "López",
+      "role": "ADMIN",
+      "token": "fdslkj156sfdv234"
     },
     {
-      "username": "user2",
+      "id": 3,
+      "username": "anaprada",
       "password": "1234",
-      "role": "USER"
+      "email": "anaprada@gmail.com",
+      "name": "Ana",
+      "lastname": "Prada",
+      "role": "USER",
+      "token": "fdslkj156sfdv345"
     }
   ]
 }
