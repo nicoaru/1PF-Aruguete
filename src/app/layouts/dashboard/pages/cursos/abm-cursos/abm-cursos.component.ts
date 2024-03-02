@@ -7,7 +7,7 @@ import { InscripcionDto } from 'src/app/core/models/inscripcion.dto';
 import { CursosService } from 'src/app/core/services/cursos.service';
 import { InscripcionesService } from './../../../../../core/services/inscripciones.service';
 
-interface IAbmCursoData {
+export interface IAbmCursoData {
   curso:Curso
 };
 

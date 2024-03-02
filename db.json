@@ -27,13 +27,6 @@
   ],
   "courses": [
     {
-      "id": 1,
-      "nombre": "React Js",
-      "descripcion": "Descubre el fascinante mundo de ReactJS, la biblioteca de JavaScript que ha revolucionado el desarrollo de interfaces de usuario en la web. Este curso te sumergirá en los fundamentos y las mejores prácticas de React, proporcionándote las habilidades necesarias para crear aplicaciones web interactivas y eficientes.",
-      "fechaInicio": "2024-03-21T00:00:00.000Z",
-      "fechaFin": "2024-05-21T00:00:00.000Z"
-    },
-    {
       "id": 2,
       "nombre": "Angular",
       "descripcion": "¡Sumérgete en el emocionante mundo de Angular y domina una de las plataformas de desarrollo web más poderosas y populares disponibles en la actualidad! Este curso te llevará desde los conceptos básicos hasta las técnicas avanzadas de Angular, permitiéndote construir aplicaciones web modernas, robustas y escalables.",
@@ -60,6 +53,13 @@
       "fechaInicio": "2024-02-15T03:00:00.000Z",
       "fechaFin": "2024-05-16T03:00:00.000Z",
       "id": 5
+    },
+    {
+      "nombre": "React Js",
+      "descripcion": "Curso de React Js",
+      "fechaInicio": "2024-03-14T03:00:00.000Z",
+      "fechaFin": "2024-05-15T03:00:00.000Z",
+      "id": 6
     }
   ],
   "enrollments": [
@@ -98,6 +98,24 @@
       "studentId": 6,
       "courseId": 2,
       "fechaInscripcion": "2024-03-02T19:14:06.125Z"
+    },
+    {
+      "id": 16,
+      "studentId": 5,
+      "courseId": 6,
+      "fechaInscripcion": "2024-03-02T23:32:25.669Z"
+    },
+    {
+      "id": 17,
+      "studentId": 5,
+      "courseId": 4,
+      "fechaInscripcion": "2024-03-02T23:32:27.735Z"
+    },
+    {
+      "id": 18,
+      "studentId": 5,
+      "courseId": 5,
+      "fechaInscripcion": "2024-03-02T23:32:30.087Z"
     }
   ],
   "users": [
