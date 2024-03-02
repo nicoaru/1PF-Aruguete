@@ -27,7 +27,6 @@ export class CursosComponent {
   async getData():Promise<void> {
     const data = await firstValueFrom(this.cursosService.getAll());
     this.cursosData = [...data]
-    console.log("Cursos data: ", this.cursosData);
   }
 
   async handleOnDelete(curso:Curso):Promise<void> {
@@ -37,12 +36,10 @@ export class CursosComponent {
     }
     catch(err:any) {
       console.log("Error eliminando curso: ", err.message);
-      
     }
   }
 
   async handleOnSelect(curso:Curso):Promise<void> {
-    console.log("handleOnSelect - curso: ", curso);
     let dialogRef = this.dialogService.open(AbmCursosComponent, {
       data:{
         curso: curso
@@ -73,8 +70,6 @@ export class CursosComponent {
       const persistio:boolean = await firstValueFrom(dialogRef.afterClosed());
       if(persistio) {
         this.getData();
-        console.log("Cursos data: ", this.cursosData);
-        
       }
     }
     catch(err:any) {

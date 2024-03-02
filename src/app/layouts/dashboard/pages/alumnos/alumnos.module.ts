@@ -8,6 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ListCursosInscriptoComponent } from './list-cursos-inscripto/list-cursos-inscripto.component';
 import { AlumnosRoutingModule } from './alumnos-routing.module';
+import { EffectsModule } from '@ngrx/effects';
+import { AlumnosEffects } from './redux/alumnos.effects';
+import { StoreModule } from '@ngrx/store';
+import { alumnosFeature } from './redux/alumnos.reducer';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,9 @@ import { AlumnosRoutingModule } from './alumnos-routing.module';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    AlumnosRoutingModule
+    AlumnosRoutingModule,
+    StoreModule.forFeature(alumnosFeature),
+    EffectsModule.forFeature([AlumnosEffects])
   ],
   exports: [
     AlumnosComponent

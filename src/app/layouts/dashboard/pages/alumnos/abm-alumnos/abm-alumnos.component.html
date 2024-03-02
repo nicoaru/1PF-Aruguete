@@ -1,21 +1,21 @@
-<div mat-dialog-title *ngIf="data.alumno">
+<div mat-dialog-title *ngIf="alumno">
     <div class="d-flex justify-content-between">
         <h1 appTitulo>{{alumno | fullName}}</h1>
-        <button mat-icon-button [mat-dialog-close]="persistio">
+        <button mat-icon-button [mat-dialog-close]>
             <mat-icon class="material-symbols-outlined">cancel</mat-icon></button>
     </div>
 </div>
-<div mat-dialog-title *ngIf="!data.alumno">
+<div mat-dialog-title *ngIf="!alumno">
     <div class="d-flex justify-content-between">
         <h1 appTitulo>Carga de alumno</h1>
-        <button mat-icon-button [mat-dialog-close]="persistio">
+        <button mat-icon-button [mat-dialog-close]>
             <mat-icon class="material-symbols-outlined">cancel</mat-icon></button>
     </div>
 </div>
 
 <mat-dialog-content class="mat-typography py-2">
     <mat-accordion>
-        <mat-expansion-panel [expanded]="!data.alumno">
+        <mat-expansion-panel [expanded]="!alumno">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Info
@@ -55,20 +55,20 @@
             </div>
             <div *ngIf="!alumno">
                 <button mat-stroked-button [disabled]="!form.valid" (click)="handleCreate()">Guardar</button>
-                <button mat-stroked-button [mat-dialog-close]="persistio">Cancelar</button>
+                <button mat-stroked-button [mat-dialog-close]>Cancelar</button>
             </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel *ngIf="data.alumno">
+        <mat-expansion-panel *ngIf="alumno">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Mis cursos
                 </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <app-list-cursos-inscripto [data]="inscripcionesData" (onDelete)="handleDeleteInscripcion($event.id!)"></app-list-cursos-inscripto>
+            <app-list-cursos-inscripto (onDelete)="handleDeleteInscripcion($event.id!)"></app-list-cursos-inscripto>
         </mat-expansion-panel>
-        <mat-expansion-panel *ngIf="data.alumno">
+        <mat-expansion-panel *ngIf="alumno">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Inscribirse

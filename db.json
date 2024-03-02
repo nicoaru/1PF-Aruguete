@@ -1,36 +1,12 @@
 {
   "students": [
     {
-      "id": 1,
-      "nombre": "Juan",
-      "apellido": "Pérez",
-      "email": "juanpe@gmail.com",
-      "telefono": "4879-9856",
-      "fechaNacimiento": "1987-11-05T00:00:00.000Z"
-    },
-    {
-      "id": 2,
-      "nombre": "Juana",
-      "apellido": "Belardez",
-      "email": "juanabe@gmail.com",
-      "telefono": "4456-4854",
-      "fechaNacimiento": "1968-10-04T00:00:00.000Z"
-    },
-    {
       "id": 3,
-      "nombre": "Alberto",
+      "nombre": "Albertico",
       "apellido": "Brener",
-      "email": "albertobre@gmail.com",
+      "fechaNacimiento": "1975-01-01T00:00:00.000Z",
       "telefono": "4168-4876",
-      "fechaNacimiento": "1975-01-01T00:00:00.000Z"
-    },
-    {
-      "id": 4,
-      "nombre": "Cacho",
-      "apellido": "Taberla",
-      "email": "cachotal@gmail.com",
-      "telefono": "4785-5846",
-      "fechaNacimiento": "1987-06-06T00:00:00.000Z"
+      "email": "albertobre@gmail.com"
     },
     {
       "id": 5,
@@ -41,12 +17,12 @@
       "fechaNacimiento": "1994-10-10T00:00:00.000Z"
     },
     {
-      "nombre": "Manuel",
-      "apellido": "Escobar",
-      "fechaNacimiento": "1993-10-11T03:00:00.000Z",
-      "telefono": "4855-7845",
-      "email": "manuescobar@gmail.com",
-      "id": 6
+      "id": 6,
+      "nombre": "Maria",
+      "apellido": "Naria",
+      "fechaNacimiento": "2024-03-04T03:00:00.000Z",
+      "telefono": "4561-4523",
+      "email": "maria@gmail.com"
     }
   ],
   "courses": [
@@ -88,64 +64,40 @@
   ],
   "enrollments": [
     {
-      "id": 1,
-      "studentId": 1,
-      "courseId": 3,
-      "fechaInscripcion": "2023-11-23T22:35:25.237Z"
-    },
-    {
-      "id": 2,
+      "id": 10,
       "studentId": 3,
       "courseId": 2,
-      "fechaInscripcion": "2024-02-02T02:36:57.259Z"
-    },
-    {
-      "id": 4,
-      "studentId": 4,
-      "courseId": 2,
-      "fechaInscripcion": "2024-02-02T16:27:45.343Z"
-    },
-    {
-      "id": 5,
-      "studentId": 3,
-      "courseId": 3,
-      "fechaInscripcion": "2023-12-31T17:55:12.611Z"
-    },
-    {
-      "id": 6,
-      "studentId": 2,
-      "courseId": 3,
-      "fechaInscripcion": "2024-01-04T18:27:02.587Z"
-    },
-    {
-      "id": 8,
-      "studentId": 1,
-      "courseId": 4,
-      "fechaInscripcion": "2024-01-29T06:24:43.222Z"
-    },
-    {
-      "id": 9,
-      "studentId": 2,
-      "courseId": 4,
-      "fechaInscripcion": "2023-12-31T21:06:32.913Z"
+      "fechaInscripcion": "2024-03-02T19:07:17.134Z"
     },
     {
       "id": 11,
-      "studentId": 1,
-      "courseId": 1,
-      "fechaInscripcion": "2024-02-14T03:11:42.668Z"
+      "studentId": 3,
+      "courseId": 3,
+      "fechaInscripcion": "2024-03-02T19:07:18.774Z"
     },
     {
       "id": 12,
-      "studentId": 1,
-      "courseId": 2,
-      "fechaInscripcion": "2024-02-14T03:11:49.934Z"
+      "studentId": 3,
+      "courseId": 4,
+      "fechaInscripcion": "2024-03-02T19:07:20.620Z"
     },
     {
       "id": 13,
-      "studentId": 1,
+      "studentId": 6,
+      "courseId": 4,
+      "fechaInscripcion": "2024-03-02T19:13:54.702Z"
+    },
+    {
+      "id": 14,
+      "studentId": 6,
       "courseId": 5,
-      "fechaInscripcion": "2024-02-14T03:11:53.095Z"
+      "fechaInscripcion": "2024-03-02T19:14:00.563Z"
+    },
+    {
+      "id": 15,
+      "studentId": 6,
+      "courseId": 2,
+      "fechaInscripcion": "2024-03-02T19:14:06.125Z"
     }
   ],
   "users": [

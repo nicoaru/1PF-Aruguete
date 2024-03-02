@@ -4,6 +4,9 @@ import { Alumno } from 'src/app/core/models/alumno.model';
 import { AbmAlumnosComponent } from './abm-alumnos/abm-alumnos.component';
 import { AlumnosService } from 'src/app/core/services/alumnos.service';
 import { firstValueFrom, timeout } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AlumnosSelectors } from './redux/alumnos.selectors';
+import { AlumnosActions } from './redux/alumnos.actions';
 
 
 @Component({
@@ -12,13 +15,24 @@ import { firstValueFrom, timeout } from 'rxjs';
   styleUrls: ['./alumnos.component.scss']
 })
 export class AlumnosComponent implements OnInit {
+  // REDUX
   public alumnosData:Alumno[] = [];
   public alumno?:Alumno;
-
+  //
+  
   constructor(
     private dialogService:MatDialog,
-    private alumnosService:AlumnosService
-  ) { }
+    private alumnosService:AlumnosService,
+    private store:Store
+  ) {
+    this.store.select(AlumnosSelectors.selectState)
+      .subscribe({
+        next: state => {
+          this.alumnosData = state.alumnosData;
+          this.alumno = state.selectedAlumno;
+        }
+      })
+  }
 
   ngOnInit(): void {
     this.getData();
@@ -26,7 +40,7 @@ export class AlumnosComponent implements OnInit {
 
   async getData():Promise<void> {
     const data = await firstValueFrom(this.alumnosService.getAll());
-    this.alumnosData = [...data]
+    this.store.dispatch(AlumnosActions.setAlumnosData({ alumnosData: data }))
     console.log("Alumnos data: ", this.alumnosData);
   }
 
@@ -37,28 +51,20 @@ export class AlumnosComponent implements OnInit {
     }
     catch(err:any) {
       console.log("Error eliminando alumno: ", err.message);
-      
     }
   }
 
   async handleOnSelect(alumno:Alumno):Promise<void> {
     console.log("handleOnSelect - alumno: ", alumno);
+    this.store.dispatch(AlumnosActions.setSelectedAlumno({ selectedAlumno: alumno }))
     let dialogRef = this.dialogService.open(AbmAlumnosComponent, {
-      data:{
-        alumno: alumno
-      },
       disableClose: true
     })
-
-    try {
-      const persistio:boolean = await firstValueFrom(dialogRef.afterClosed());
-      if(persistio) {
-        this.getData();
-      }
-    }
-    catch(err:any) {
-      console.log("Error al hacer update: ", err.message);
-    }
+  
+    dialogRef.afterClosed()
+      .subscribe({
+        next: value => this.getData()
+      })
   }
 
   async handleCargarNuevo():Promise<void> {
@@ -69,17 +75,9 @@ export class AlumnosComponent implements OnInit {
       disableClose: true
     });
 
-    try {
-      const persistio:boolean = await firstValueFrom(dialogRef.afterClosed());
-      if(persistio) {
-        this.getData();
-        console.log("Alumnos data: ", this.alumnosData);
-        
-      }
-    }
-    catch(err:any) {
-      console.log("Error al cargar nuevo: ", err.message);
-    }
+    dialogRef.afterClosed()
+    .subscribe({
+      next: value => this.getData()
+    })
   }
-
 }

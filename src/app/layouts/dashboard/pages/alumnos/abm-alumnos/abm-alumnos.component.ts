@@ -1,42 +1,57 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Alumno } from 'src/app/core/models/alumno.model';
 import { AlumnosService } from 'src/app/core/services/alumnos.service';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom, takeUntil } from 'rxjs';
 import { InscripcionDto } from 'src/app/core/models/inscripcion.dto';
 import { InscripcionesService } from 'src/app/core/services/inscripciones.service';
 import { Curso } from 'src/app/core/models/curso.model';
 import { CursosService } from 'src/app/core/services/cursos.service';
-
-interface IAbmAlumnosData {
-  alumno:Alumno
-};
-
+import { Store } from '@ngrx/store';
+import { AlumnosSelectors } from '../redux/alumnos.selectors';
+import { AlumnosActions } from '../redux/alumnos.actions';
 
 @Component({
   selector: 'app-abm-alumnos',
   templateUrl: './abm-alumnos.component.html',
   styleUrls: ['./abm-alumnos.component.scss']
 })
-export class AbmAlumnosComponent implements OnInit {
-  public alumno?:Alumno|null;
-  public isEditable:boolean;
-  public form:FormGroup;
-  public persistio:boolean = false;
-  public inscripcionesData:InscripcionDto[] = [];
-  public cursosData:Curso[] = [];
-  public cursosDisponibles:Curso[] = [];
-  public cursoAInscribir:Curso|null = null;
+export class AbmAlumnosComponent implements OnInit, OnDestroy {
+  // REDUX
+  alumno?:Alumno;
+  inscripcionesData:InscripcionDto[] = [];
+  cursosData:Curso[] = [];
+  //
+
+  cursosDisponibles:Curso[] = [];
+  cursoAInscribir:Curso|null = null;
+  
+  isEditable:boolean;
+  form:FormGroup;
+  destroyedComponent$:Subject<boolean> = new Subject();
 
   constructor(
+    private store:Store,
     private alumnosService:AlumnosService,
     private inscripcionesService:InscripcionesService,
     private cursosService:CursosService,
     private formBuilder:FormBuilder,
     public dialogRef: MatDialogRef<AbmAlumnosComponent, boolean>,
-    @Inject(MAT_DIALOG_DATA) public data:IAbmAlumnosData
-    ) {
+  ) {
+    // REDUX
+    this.store.select(AlumnosSelectors.selectState)
+      .pipe(takeUntil(this.destroyedComponent$))
+      .subscribe({
+        next: state => {
+          this.alumno = state.selectedAlumno;
+          this.inscripcionesData = state.inscripcionesData;
+          this.cursosData = state.cursosData;
+        }
+      })
+    //
+
+    // REACTIVE FORM
     this.form = this.formBuilder.group({
       nombre:["", Validators.required],
       apellido:["", Validators.required],
@@ -44,10 +59,10 @@ export class AbmAlumnosComponent implements OnInit {
       telefono:["", Validators.required],
       email:["", [Validators.required, Validators.email]]
     })
-    this.alumno = this.data?.alumno;
-    console.log("ALUMNO: ", this.alumno);
-    
+    //
+
     this.isEditable = !this.alumno;
+
   }
 
   async ngOnInit(): Promise<void> {
@@ -57,15 +72,13 @@ export class AbmAlumnosComponent implements OnInit {
   }
 
   async getCursosInscriptoData():Promise<void> {
-    const data = await firstValueFrom( this.inscripcionesService.getByAlumnoId(this.alumno?.id!));
-    this.inscripcionesData = [...data]
+    this.store.dispatch(AlumnosActions.setInscripcionesData({ inscripcionesData: await firstValueFrom( this.inscripcionesService.getByAlumnoId(this.alumno?.id!)) }))
+    
     this.filtrarCursosDisponibles();
-    console.log("Incripciones: ", this.inscripcionesData);
   }
 
   async getCursosData():Promise<void> {
-    const data = await firstValueFrom(this.cursosService.getAll());
-    this.cursosData = [...data]
+    this.store.dispatch(AlumnosActions.setCursosData({ cursosData: await firstValueFrom(this.cursosService.getAll()) }))
   }
 
   filtrarCursosDisponibles():void {
@@ -98,20 +111,19 @@ export class AbmAlumnosComponent implements OnInit {
     alumno.fechaNacimiento = this.form.get("fechaNacimiento")?.value;
     alumno.telefono = this.form.get("telefono")?.value;
     alumno.email = this.form.get("email")?.value;
-    alumno.id = this.data?.alumno?.id;
+    alumno.id = this.alumno?.id || null;
 
     return alumno;
   }
 
   async handleUpdate():Promise<void> {
     this.alumno = this.alumnoFromForm();
-    console.log("updateAlumno - this.alumno: ", this.alumno);
-    const id = this.data.alumno.id;
+    const id = this.alumno.id;
 
     try {
-      this.alumno = await firstValueFrom(this.alumnosService.updateById(id!, this.alumno));
+      this.store.dispatch(AlumnosActions.setSelectedAlumno({ selectedAlumno: await firstValueFrom(this.alumnosService.updateById(id!, this.alumno)) }))
+
       this.toggleEdit();
-      this.persistio = true;
     }
     catch (err){
       console.log("Error haciendo update del alumno ", id);
@@ -122,12 +134,8 @@ export class AbmAlumnosComponent implements OnInit {
     let alumnoCreated:Alumno|null = this.alumnoFromForm();
     try {
       alumnoCreated = await firstValueFrom(this.alumnosService.create(alumnoCreated));
-      console.log("Alumno creado: ", alumnoCreated);
-      console.log("Alumnos: ", await firstValueFrom(this.alumnosService.getAll()));
-      
-      
-      this.persistio = true;
-      this.dialogRef.close(this.persistio);
+
+      this.dialogRef.close();
     }
     catch (err){
       console.log("Error creando alumno");
@@ -141,7 +149,6 @@ export class AbmAlumnosComponent implements OnInit {
   async handleDeleteInscripcion(id:number):Promise<void> {
     try {
       const deleted:InscripcionDto|null = await firstValueFrom(await this.inscripcionesService.deleteById(id));
-      console.log("Deleted inscripcion: ", deleted);
       this.getCursosInscriptoData();
     }
     catch (err:any) {
@@ -163,5 +170,11 @@ export class AbmAlumnosComponent implements OnInit {
       this.cursoAInscribir = null;
       await this.getCursosInscriptoData();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(AlumnosActions.setSelectedAlumno({}));
+    this.destroyedComponent$.next(true);
+    this.destroyedComponent$.complete();
   }
 }

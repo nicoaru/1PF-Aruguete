@@ -6,7 +6,6 @@ import { Curso } from 'src/app/core/models/curso.model';
 import { InscripcionDto } from 'src/app/core/models/inscripcion.dto';
 import { CursosService } from 'src/app/core/services/cursos.service';
 import { InscripcionesService } from './../../../../../core/services/inscripciones.service';
-import { Inscripcion } from 'src/app/core/models/inscripcion.model';
 
 interface IAbmCursoData {
   curso:Curso
@@ -39,7 +38,6 @@ export class AbmCursosComponent {
       fechaFin:["", Validators.required]
     })
     this.curso = this.data?.curso;
-    console.log("CURSO: ", this.curso);
     
     this.isEditable = !this.curso;
   }
@@ -52,7 +50,6 @@ export class AbmCursosComponent {
   async getInscriptosData():Promise<void> {
     const data = await firstValueFrom(this.inscripcionesService.getByCursoId(this.curso?.id!));
     this.inscripcionesData = [...data]
-    console.log("Inscriptos data: ", this.inscripcionesData);
   }
 
   toggleEdit():void {
@@ -83,7 +80,6 @@ export class AbmCursosComponent {
 
   async handleUpdate():Promise<void> {
     const cursoUpdated = this.cursoFromForm();
-    console.log("updateCurso - this.curso: ", this.curso);
     const id = this.data.curso.id;
 
     try {
@@ -100,10 +96,6 @@ export class AbmCursosComponent {
     let cursoCreated:Curso|null = this.cursoFromForm();
     try {
       cursoCreated = await firstValueFrom(this.cursosService.create(cursoCreated));
-      console.log("Curso creado: ", cursoCreated);
-      console.log("Cursos: ", await firstValueFrom(this.cursosService.getAll()));
-      
-      
       this.persistio = true;
       this.dialogRef.close(this.persistio);
     }
@@ -119,7 +111,6 @@ export class AbmCursosComponent {
   async handleDeleteInscripto(id:number):Promise<void> {
     try {
       const deleted:InscripcionDto|null = await firstValueFrom(await this.inscripcionesService.deleteById(id));
-      console.log("Deleted inscripcion: ", deleted);
       this.getInscriptosData();
     }
     catch (err:any) {

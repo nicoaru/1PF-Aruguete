@@ -1,5 +1,5 @@
 <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="data">
+    <table mat-table [dataSource]="inscripcionesData">
 
         <!-- nombre completo -->
         <ng-container matColumnDef="nombre">
@@ -19,7 +19,7 @@
             <td mat-cell *matCellDef="let element">{{element.course?.fechaFin | date : "dd/MM/yyyy"}}</td>
         </ng-container>
 
-        <!-- ver -->
+        <!-- delete -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element"> 
