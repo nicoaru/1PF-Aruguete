@@ -124,8 +124,8 @@
       "username": "nicoaru",
       "password": "1234",
       "email": "nicoaru@gmail.com",
-      "name": "Nico",
-      "lastname": "Aru",
+      "nombre": "Nico",
+      "apellido": "Aru",
       "role": "USER",
       "token": "fdslkj156sfdv123"
     },
@@ -134,8 +134,8 @@
       "username": "admin",
       "password": "5678",
       "email": "admin@gmail.com",
-      "name": "Pedro",
-      "lastname": "López",
+      "nombre": "Pedro",
+      "apellido": "López",
       "role": "ADMIN",
       "token": "fdslkj156sfdv234"
     },
@@ -144,8 +144,8 @@
       "username": "anaprada",
       "password": "1234",
       "email": "anaprada@gmail.com",
-      "name": "Ana",
-      "lastname": "Prada",
+      "nombre": "Ana",
+      "apellido": "Prada",
       "role": "USER",
       "token": "fdslkj156sfdv345"
     }
